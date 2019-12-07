@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'import_export',
+    'django_q',
 
     'bday_admin',
     'bday',
@@ -99,3 +100,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 TG_TOKEN = env.str('TG_TOKEN')
 
 TG_PROXY_URL = env.str('TG_PROXY_URL')
+
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 2,
+    'timeout': 90,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
