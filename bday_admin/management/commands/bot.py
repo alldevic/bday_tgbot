@@ -54,8 +54,8 @@ class Command(BaseCommand):
         )
         bot = Bot(
             request=request,
-            token=settings.TOKEN,
-            base_url=settings.PROXY_URL,
+            token=settings.TG_TOKEN,
+            base_url=settings.TG_PROXY_URL,
         )
         print(bot.get_me())
 

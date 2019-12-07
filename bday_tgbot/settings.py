@@ -1,12 +1,15 @@
 import os
+import environ
+
+env = environ.Env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'g+!c#2e+5n(d2&sry)_mdhj!$rkf3zte*c1n#8q5@2y0hb78_!'
+SECRET_KEY = env.str('SECRET_KEY')
 
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,15 +50,20 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bday_tgbot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env.str('POSTGRES_DB'),
+        'USER': env.str('POSTGRES_USER'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD'),
+        'HOST': 'postgres_db',
+        'PORT': 5432,
     }
 }
 
+
+WSGI_APPLICATION = 'bday_tgbot.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -83,8 +91,8 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+TG_TOKEN = env.str('TG_TOKEN')
 
-TOKEN = 'token'
-
-PROXY_URL = 'proxy'
+TG_PROXY_URL = env.str('TG_PROXY_URL')
