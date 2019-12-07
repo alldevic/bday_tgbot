@@ -44,6 +44,23 @@ def do_echo(update: Update, context: CallbackContext):
     )
 
 
+@log_errors
+def check_bdays(update: Update, context: CallbackContext):
+    chat_id = update.message.chat_id
+
+    p, _ = Profile.objects.get_or_create(
+        external_id=chat_id,
+        defaults={
+            'name': update.message.from_user.username,
+        }
+    )
+    count = Message.objects.filter(profile=p).count()
+
+    update.message.reply_text(
+        text=f'У вас {count} сообщений',
+    )
+
+
 class Command(BaseCommand):
     help = 'Телеграм-бот'
 
@@ -66,6 +83,9 @@ class Command(BaseCommand):
 
         message_handler = MessageHandler(Filters.text, do_echo)
         updater.dispatcher.add_handler(message_handler)
+
+        message_handler2 = CommandHandler('check', check_bdays)
+        updater.dispatcher.add_handler(message_handler2)
 
         updater.start_polling()
         updater.idle()
