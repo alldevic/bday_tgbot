@@ -23,7 +23,7 @@ services:
       private_network:
 
   postgres_db:
-    container_name: db
+    container_name: postgres_db
     env_file: .env
     image: postgres:11-alpine
     restart: on-failure

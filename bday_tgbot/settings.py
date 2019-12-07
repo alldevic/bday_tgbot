@@ -19,7 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'bday_admin'
+    'import_export',
+
+    'bday_admin',
+    'bday',
 ]
 
 MIDDLEWARE = [
