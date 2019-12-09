@@ -10,6 +10,8 @@ class Profile(models.Model):
         verbose_name='Имя пользователя',
     )
 
+    is_sub = models.BooleanField("Подписан?")
+
     def __str__(self):
         return f'#{self.external_id} {self.name}'
 

@@ -7,6 +7,8 @@ from telegram.utils.request import Request
 
 from bday_admin.models import Message, Profile
 
+import datetime
+import telegram
 
 def log_errors(f):
 
@@ -30,7 +32,8 @@ def do_echo(update: Update, context: CallbackContext):
         external_id=chat_id,
         defaults={
             'name': update.message.from_user.username,
-        }
+        },
+        is_sub=False
     )
     m = Message(
         profile=p,
@@ -52,13 +55,66 @@ def check_bdays(update: Update, context: CallbackContext):
         external_id=chat_id,
         defaults={
             'name': update.message.from_user.username,
-        }
+        },
+        is_sub=False
     )
     count = Message.objects.filter(profile=p).count()
 
     update.message.reply_text(
         text=f'У вас {count} сообщений',
     )
+
+
+@log_errors
+def go_start(update: Update, context: CallbackContext):
+    chat_id = update.message.chat_id
+
+    p, _ = Profile.objects.get_or_create(
+        external_id=chat_id,
+        defaults={
+            'name': update.message.from_user.username,
+        }
+    )
+
+
+    # Оформить флаг подписки, добавить handler?
+    p.is_sub = True
+    p.save()
+
+    update.message.reply_text(
+        text='Вы подписаны',
+    )
+
+
+@log_errors
+def go_stop(update: Update, context: CallbackContext):
+    chat_id = update.message.chat_id
+
+    p, _ = Profile.objects.get_or_create(
+        external_id=chat_id,
+        defaults={
+            'name': update.message.from_user.username,
+        }
+    )
+
+    # УБрать флаг подписки, отвязать hsndler?
+    p.is_sub = False
+    p.save()
+
+
+    update.message.reply_text(
+        text='Подписка отменена',
+    )
+
+
+
+@log_errors
+def check_bdays(context: telegram.ext.CallbackContext):
+    subs = Profile.objects.filter(is_sub=True)
+
+    for sub in subs:
+         context.bot.send_message(chat_id=sub.external_id, 
+                             text='Hello, world!')
 
 
 class Command(BaseCommand):
@@ -86,6 +142,15 @@ class Command(BaseCommand):
 
         message_handler2 = CommandHandler('check', check_bdays)
         updater.dispatcher.add_handler(message_handler2)
+
+        message_handler3 = CommandHandler('start', go_start)
+        updater.dispatcher.add_handler(message_handler3)
+
+        message_handler4 = CommandHandler('stop', go_stop)
+        updater.dispatcher.add_handler(message_handler4)
+        
+        updater.job_queue.run_daily(check_bdays,
+                                    datetime.time(hour=2, minute=45))
 
         updater.start_polling()
         updater.idle()
