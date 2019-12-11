@@ -172,7 +172,7 @@ class Command(BaseCommand):
         updater.dispatcher.add_handler(message_handler4)
         
         updater.job_queue.run_daily(ch_bdays,
-                                    datetime.time(hour=2, minute=45))
+                                    datetime.time(hour=settings.TG_HOUR, minute=settings.TG_MINUTE))
 
         updater.start_polling()
         updater.idle()
