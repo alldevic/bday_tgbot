@@ -1,8 +1,10 @@
 FROM alpine:3.10 AS build
 ARG DEBUG
+ARG SET_TZ
+ARG CONTAINER_TIMEZONE
 ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /app && \
-  apk add --no-cache python3 postgresql-libs && \
+  apk add --no-cache python3 postgresql-libs tzdata openntpd && \
   if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi && \
   apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev postgresql-dev libressl-dev libffi-dev make && \
   pip3 install --disable-pip-version-check --no-cache-dir pipenv
@@ -15,7 +17,7 @@ RUN if [[ "$DEBUG" == "TRUE" ]] || [[ "$DEBUG" == "True" ]] || [[ "$DEBUG" == "1
   pip3 uninstall pipenv virtualenv virtualenv-clone pip -y; \
   else \
   echo "Install only PROD packages"; \
-  pip3 install --disable-pip-version-check --no-cache-dir gunicorn uvicorn; \
+  pip3 install --disable-pip-version-check --no-cache-dir gunicorn meinheld; \
   pipenv install --system --deploy --ignore-pipfile; \
   pip3 uninstall pipenv virtualenv virtualenv-clone pip -y; \
   fi && \
@@ -44,6 +46,14 @@ RUN if [[ "$DEBUG" == "TRUE" ]] || [[ "$DEBUG" == "True" ]] || [[ "$DEBUG" == "1
   find /usr/lib/python*/site-packages/django/contrib/sites/locale ! -name ru ! -name en* -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 rm -rf && \
   rm -rf /app/Pipfile* && \
   rm -rf /usr/lib/python*/site-packages/*.dist-info
+
+RUN if [[ "$SET_TZ" = "True" ]]; then \
+      cp /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime; \
+	    echo "${CONTAINER_TIMEZONE}" >  /etc/timezone; \
+	    echo "Container timezone set to: $CONTAINER_TIMEZONE"; \
+    else \
+	    echo "Container timezone not modified"; \
+    fi
 
 
 FROM scratch AS deploy

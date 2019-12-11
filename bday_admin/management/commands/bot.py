@@ -33,7 +33,6 @@ def do_echo(update: Update, context: CallbackContext):
         defaults={
             'name': update.message.from_user.username,
         },
-        is_sub=False
     )
     m = Message(
         profile=p,
@@ -58,24 +57,21 @@ def check_bdays(update: Update, context: CallbackContext):
         }
     )
     
+    if p.is_sub:
+        cur_month = datetime.datetime.now().month
+        cur_day = datetime.datetime.now().day
+        bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
+
+        str = ""
+        if len(bdays) == 0:
+            str = "Сегодня никто не празднует день рождения"
+        else:
+            for x in bdays:
+                str += f"Сегодня день рожкдения праднует {x.man}\n"
     
-    cur_month = datetime.datetime.now().month
-    cur_day = datetime.datetime.now().day
-    bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
-
-    str = ""
-    if len(bdays) == 0:
-        str = "Сегодня никто не празднует день рождения"
-    else:
-        for x in bdays:
-            str += f"Сегодня день рожкдения праднует {x.man}\n"
-    
-
-
-
-    update.message.reply_text(
-        text=str,
-    )
+        update.message.reply_text(
+            text=str,
+        )
 
 
 @log_errors
@@ -173,7 +169,7 @@ class Command(BaseCommand):
         updater.dispatcher.add_handler(message_handler4)
         
         updater.job_queue.run_daily(ch_bdays,
-                                    datetime.time(hour=2, minute=45))
+                                    datetime.time(hour=settings.TG_HOUR, minute=settings.TG_MINUTE))
 
         updater.start_polling()
         updater.idle()

@@ -9,7 +9,7 @@ psycopg2-binary = "*"
 django-environ = "*"
 python-telegram-bot = "*"
 django-import-export = "*"
-django-q = "*"
+whitenoise = "*"
 
 [dev-packages]
 autopep8 = "*"
