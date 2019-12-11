@@ -33,7 +33,7 @@ services:
       private_network:
 
   tgbot:
-    image: bday_tgbot_admin_panel:latest
+    image: bday_tgbot_admin_panel
     container_name: bday_tgbot
     env_file: .env
     user: ${CURRENT_UID}

@@ -33,7 +33,6 @@ def do_echo(update: Update, context: CallbackContext):
         defaults={
             'name': update.message.from_user.username,
         },
-        is_sub=False
     )
     m = Message(
         profile=p,
