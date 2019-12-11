@@ -15,7 +15,7 @@ RUN if [[ "$DEBUG" == "TRUE" ]] || [[ "$DEBUG" == "True" ]] || [[ "$DEBUG" == "1
   pip3 uninstall pipenv virtualenv virtualenv-clone pip -y; \
   else \
   echo "Install only PROD packages"; \
-  pip3 install --disable-pip-version-check --no-cache-dir gunicorn uvicorn; \
+  pip3 install --disable-pip-version-check --no-cache-dir gunicorn meinheld; \
   pipenv install --system --deploy --ignore-pipfile; \
   pip3 uninstall pipenv virtualenv virtualenv-clone pip -y; \
   fi && \

@@ -3,18 +3,18 @@ version: '3.4'
 services:
 
   admin_panel:
-    container_name: admin
+    container_name: bday_admin
     env_file: .env
     user: ${CURRENT_UID}
     volumes:
       - ./:/app/
     build:
-      context: .
+      context: ./
       args:
-        - DEBUG=True
+        - DEBUG=${COMMON_DEBUG}
+      target: deploy
     restart: on-failure
-    entrypoint: python3
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: sh ./docker-entrypoint.sh
     ports:
       - 80:8000
     depends_on:
@@ -33,15 +33,12 @@ services:
       private_network:
 
   tgbot:
+    image: bday_tgbot_admin_panel:latest
     container_name: bday_tgbot
     env_file: .env
     user: ${CURRENT_UID}
     volumes:
       - ./:/app/
-    build:
-      context: .
-      args:
-        - DEBUG=True
     restart: on-failure
     entrypoint: python3
     command: ./manage.py bot
@@ -50,27 +47,6 @@ services:
       - postgres_db
     networks:
       private_network:
-
-
-  qcluster:
-    container_name: bday_qcluster
-    env_file: .env
-    user: ${CURRENT_UID}
-    volumes:
-      - ./:/app/
-    build:
-      context: .
-      args:
-        - DEBUG=True
-    restart: on-failure
-    entrypoint: python3
-    command: ./manage.py qcluster
-    depends_on:
-      - admin_panel
-      - postgres_db
-    networks:
-      private_network:
-
 
 networks:
   private_network:
