@@ -6,7 +6,7 @@ from telegram.ext import (CallbackContext, CommandHandler, Filters,
 from telegram.utils.request import Request
 
 from bday_admin.models import Message, Profile
-
+from bday.models import Bday
 import datetime
 import telegram
 
@@ -55,13 +55,26 @@ def check_bdays(update: Update, context: CallbackContext):
         external_id=chat_id,
         defaults={
             'name': update.message.from_user.username,
-        },
-        is_sub=False
+        }
     )
-    count = Message.objects.filter(profile=p).count()
+    
+    
+    cur_month = datetime.datetime.now().month
+    cur_day = datetime.datetime.now().day
+    bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
+
+    str = ""
+    if len(bdays) == 0:
+        str = "Сегодня никто не празднует день рождения"
+    else:
+        for x in bdays:
+            str += f"Сегодня день рожкдения праднует {x.man}\n"
+    
+
+
 
     update.message.reply_text(
-        text=f'У вас {count} сообщений',
+        text=str,
     )
 
 
@@ -109,12 +122,22 @@ def go_stop(update: Update, context: CallbackContext):
 
 
 @log_errors
-def check_bdays(context: telegram.ext.CallbackContext):
+def ch_bdays(context: telegram.ext.CallbackContext):
     subs = Profile.objects.filter(is_sub=True)
+    cur_month = datetime.datetime.now().month
+    cur_day = datetime.datetime.now().day
+    bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
+
+    str = ""
+    if len(bdays) == 0:
+        str = "Сегодня никто не празднует день рождения"
+    else:
+        for x in bdays:
+            str += f"Сегодня день рожкдения праднует {x.man}\n"
 
     for sub in subs:
          context.bot.send_message(chat_id=sub.external_id, 
-                             text='Hello, world!')
+                             text=str)
 
 
 class Command(BaseCommand):
@@ -149,7 +172,7 @@ class Command(BaseCommand):
         message_handler4 = CommandHandler('stop', go_stop)
         updater.dispatcher.add_handler(message_handler4)
         
-        updater.job_queue.run_daily(check_bdays,
+        updater.job_queue.run_daily(ch_bdays,
                                     datetime.time(hour=2, minute=45))
 
         updater.start_polling()
