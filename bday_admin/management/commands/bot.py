@@ -57,24 +57,21 @@ def check_bdays(update: Update, context: CallbackContext):
         }
     )
     
+    if p.is_sub:
+        cur_month = datetime.datetime.now().month
+        cur_day = datetime.datetime.now().day
+        bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
+
+        str = ""
+        if len(bdays) == 0:
+            str = "Сегодня никто не празднует день рождения"
+        else:
+            for x in bdays:
+                str += f"Сегодня день рожкдения праднует {x.man}\n"
     
-    cur_month = datetime.datetime.now().month
-    cur_day = datetime.datetime.now().day
-    bdays = Bday.objects.filter(bday__day=cur_day, bday__month=cur_month)
-
-    str = ""
-    if len(bdays) == 0:
-        str = "Сегодня никто не празднует день рождения"
-    else:
-        for x in bdays:
-            str += f"Сегодня день рожкдения праднует {x.man}\n"
-    
-
-
-
-    update.message.reply_text(
-        text=str,
-    )
+        update.message.reply_text(
+            text=str,
+        )
 
 
 @log_errors
