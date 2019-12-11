@@ -4,6 +4,8 @@ set -o errexit
 set -o pipefail
 cmd="$@"
 
+date
+
 function postgres_ready(){
 python3 << END
 import sys

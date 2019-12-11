@@ -12,6 +12,8 @@ services:
       context: ./
       args:
         - DEBUG=${COMMON_DEBUG}
+        - SET_TZ=${SET_CONTAINER_TIMEZONE}
+        - CONTAINER_TIMEZONE=${CONTAINER_TIMEZONE}
       target: deploy
     restart: on-failure
     command: sh ./docker-entrypoint.sh

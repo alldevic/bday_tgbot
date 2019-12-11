@@ -102,5 +102,5 @@ TG_TOKEN = env.str('TG_TOKEN')
 
 TG_PROXY_URL = env.str('TG_PROXY_URL')
 
-settings.TG_HOUR = env.str('TG_HOUR')
-settings.TG_MINUTE = env.str('TG_MINUTE')
+TG_HOUR = env.int('TG_HOUR')
+TG_MINUTE = env.int('TG_MINUTE')
