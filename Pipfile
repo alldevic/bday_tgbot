@@ -10,6 +10,7 @@ django-environ = "*"
 python-telegram-bot = "*"
 django-import-export = "*"
 whitenoise = "*"
+django-q = "*"
 
 [dev-packages]
 autopep8 = "*"
