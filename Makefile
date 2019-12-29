@@ -12,8 +12,8 @@ upb:
 down:
 	docker-compose down
 sh:
-	docker exec -it /bday_admin_panel /bin/sh
+	docker exec -it /bday_admin /bin/sh
 migrations:
-	docker exec -it /bday_admin_panel python3 manage.py makemigrations
+	docker exec -it /bday_admin python3 manage.py makemigrations
 su:
-	docker exec -it /bday_admin_panel python3 manage.py createsuperuser
+	docker exec -it /bday_admin python3 manage.py createsuperuser

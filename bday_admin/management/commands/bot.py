@@ -10,6 +10,7 @@ from bday.models import Bday
 import datetime
 import telegram
 
+
 def log_errors(f):
 
     def inner(*args, **kwargs):
@@ -56,7 +57,7 @@ def check_bdays(update: Update, context: CallbackContext):
             'name': update.message.from_user.username,
         }
     )
-    
+
     if p.is_sub:
         cur_month = datetime.datetime.now().month
         cur_day = datetime.datetime.now().day
@@ -68,7 +69,7 @@ def check_bdays(update: Update, context: CallbackContext):
         else:
             for x in bdays:
                 str += f"Сегодня день рожкдения праднует {x.man}\n"
-    
+
         update.message.reply_text(
             text=str,
         )
@@ -84,7 +85,6 @@ def go_start(update: Update, context: CallbackContext):
             'name': update.message.from_user.username,
         }
     )
-
 
     # Оформить флаг подписки, добавить handler?
     p.is_sub = True
@@ -110,11 +110,9 @@ def go_stop(update: Update, context: CallbackContext):
     p.is_sub = False
     p.save()
 
-
     update.message.reply_text(
         text='Подписка отменена',
     )
-
 
 
 @log_errors
@@ -132,8 +130,8 @@ def ch_bdays(context: telegram.ext.CallbackContext):
             str += f"Сегодня день рожкдения праднует {x.man}\n"
 
     for sub in subs:
-         context.bot.send_message(chat_id=sub.external_id, 
-                             text=str)
+        context.bot.send_message(chat_id=sub.external_id,
+                                 text=str)
 
 
 class Command(BaseCommand):
@@ -167,9 +165,17 @@ class Command(BaseCommand):
 
         message_handler4 = CommandHandler('stop', go_stop)
         updater.dispatcher.add_handler(message_handler4)
-        
-        updater.job_queue.run_daily(ch_bdays,
-                                    datetime.time(hour=settings.TG_HOUR, minute=settings.TG_MINUTE))
 
-        updater.start_polling()
+        updater.job_queue.run_daily(ch_bdays,
+                                    datetime.time(hour=settings.TG_HOUR,
+                                                  minute=settings.TG_MINUTE))
+
+        # updater.start_polling()
+
+        updater.start_webhook(listen="0.0.0.0",
+                              port=8443,
+                              url_path=settings.TG_TOKEN)
+
+        updater.bot.set_webhook(
+            'https://bots.stdfo.ru:443/' + settings.TG_TOKEN)
         updater.idle()

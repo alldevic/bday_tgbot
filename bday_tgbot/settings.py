@@ -100,7 +100,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TG_TOKEN = env.str('TG_TOKEN')
 
-TG_PROXY_URL = env.str('TG_PROXY_URL')
+TG_PROXY_URL = env.str('TG_PROXY_URL', None)
 
-TG_HOUR = env.int('TG_HOUR')
-TG_MINUTE = env.int('TG_MINUTE')
+TG_HOUR = env.int('TG_HOUR', 8)
+TG_MINUTE = env.int('TG_MINUTE', 15)
