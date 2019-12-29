@@ -49,23 +49,6 @@ services:
     networks:
       private_network:
 
-  qcluster:
-    image: bday_tgbot_admin_panel
-    container_name: bday_qcluster
-    env_file: .env
-    user: ${CURRENT_UID}
-    volumes:
-      - ./:/app/
-    restart: on-failure
-    entrypoint: python3
-    command: ./manage.py qcluster
-    depends_on:
-      - admin_panel
-      - postgres_db
-      - tgbot
-    networks:
-      private_network:
-
 networks:
   private_network:
     ipam:
