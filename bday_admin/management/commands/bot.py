@@ -68,7 +68,7 @@ def check_bdays(update: Update, context: CallbackContext):
             str = "Сегодня никто не празднует день рождения"
         else:
             for x in bdays:
-                str += f"Сегодня день рожкдения праднует {x.man}\n"
+                str += f"Сегодня день рождения празднует {x.man}\n"
 
         update.message.reply_text(
             text=str,
