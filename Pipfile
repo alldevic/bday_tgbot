@@ -9,7 +9,6 @@ psycopg2-binary = "==2.8.4"
 django-environ = "==0.4.5"
 python-telegram-bot = "==12.3.0"
 django-import-export = "==2.0.1"
-whitenoise = "==5.0.1"
 
 [dev-packages]
 autopep8 = "*"
