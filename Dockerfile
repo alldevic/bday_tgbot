@@ -4,7 +4,7 @@ ARG SET_TZ
 ARG CONTAINER_TIMEZONE
 ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /app && \
-  apk add --no-cache python3 postgresql-libs tzdata openntpd && \
+  apk add --no-cache python3 postgresql-libs py3-psycopg2 tzdata openntpd && \
   if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi && \
   apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev postgresql-dev libressl-dev libffi-dev make && \
   pip3 install --disable-pip-version-check --no-cache-dir pipenv
