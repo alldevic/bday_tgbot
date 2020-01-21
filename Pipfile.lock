@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8fb76955dcaa4323d0a4979a8a147eda04c68009d986a038b872a44a5aac0847"
+            "sha256": "7719cba1bdcc82cc036c50b259f157a37fac68ad5c41463ae47206a6a8f4480e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -170,11 +170,11 @@
         },
         "python-telegram-bot": {
             "hashes": [
-                "sha256:41608512a3025a04ff7472efcaae344ad7533a77ae207685bb10fc2fc8282f7b",
-                "sha256:5e2156f829402e41bb5ea7196e450bf7f121c5689c5100ae180507d72f3777f5"
+                "sha256:346d42771c2b23384c59f5f41e05bd7e801a0ce118d8dcb95209bb73d5f694c5",
+                "sha256:3beee89cba3bc3217566c96199f04776dd25f541ac8992da27fd247b2d208a14"
             ],
             "index": "pypi",
-            "version": "==12.3.0"
+            "version": "==12.2.0"
         },
         "pytz": {
             "hashes": [
@@ -250,10 +250,10 @@
     "develop": {
         "autopep8": {
             "hashes": [
-                "sha256:4d8eec30cc81bc5617dbf1218201d770dc35629363547f17577c61683ccfb3ee"
+                "sha256:0f592a0447acea0c2b0a9602be1e4e3d86db52badd2e3c84f0193bfd89fd3a43"
             ],
             "index": "pypi",
-            "version": "==1.4.4"
+            "version": "==1.5"
         },
         "entrypoints": {
             "hashes": [
