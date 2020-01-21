@@ -7,6 +7,7 @@ services:
     user: ${CURRENT_UID}
     volumes:
       - ./:/app/
+      - bday_static:/app/static/
     build:
       context: ./
       args:
@@ -58,3 +59,7 @@ networks:
 
 volumes:
   bday_db_data:
+    external: true
+  bday_static:
+    external: true
+    
