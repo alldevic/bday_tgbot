@@ -61,6 +61,8 @@ RUN if [[ "$SET_TZ" = "True" ]]; then \
   echo "Container timezone not modified"; \
   fi
 
+RUN rm -rf /usr/share/zoneinfo
+
 
 FROM scratch AS deploy
 ARG DEBUG

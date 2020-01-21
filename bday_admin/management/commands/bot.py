@@ -171,6 +171,7 @@ class Command(BaseCommand):
                                                   minute=settings.TG_MINUTE))
 
         # updater.start_polling()
+        print(datetime.datetime.now())
 
         updater.start_webhook(listen="0.0.0.0",
                               port=8443,
