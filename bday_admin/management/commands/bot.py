@@ -127,7 +127,7 @@ def ch_bdays(context: telegram.ext.CallbackContext):
         str = "Сегодня никто не празднует день рождения"
     else:
         for x in bdays:
-            str += f"Сегодня день рожкдения праднует {x.man}\n"
+            str += f"Сегодня день рождения празднует {x.man}\n"
 
     for sub in subs:
         context.bot.send_message(chat_id=sub.external_id,
