@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==2.2.13"
+django = "==2.2.18"
 django-environ = "==0.4.5"
 python-telegram-bot = "==12.3.0"
 django-import-export = "==2.0.1"
